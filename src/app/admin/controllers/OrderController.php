@@ -165,7 +165,6 @@ class OrderController extends Controller
     public function addOrderAction()
     {
         $this->view->t = $this->cache->get($this->request->get('locale'));
-        // $orders = new Orders($this->mongo, 'store', 'orders');
         $products = new Products($this->mongo, 'store', 'products');
         $this->view->products = $products->find();
 

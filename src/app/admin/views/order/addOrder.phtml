@@ -43,9 +43,7 @@
 
         $allproducts = array();
         foreach ($products as $product) {
-            // echo "<pre>";
             $id =  (array)($product->_id);
-            // print_r($id);
             $allproducts[$id['oid']] = $product->product_name;
         }
         // dropdown
@@ -69,50 +67,29 @@
 <script>
     $('.product').on('click', function() {
         id = ($('#product').val());
-        console.log(id);
-
         $.ajax({
             method: "get",
             url: "",
             data: {
                 id: id,
-                'action': 'drop'
             },
 
         }).done(function(data) {
             data = JSON.parse(data)
-            // JSON.parse(data)
-            // console.log((data));
-            // console.log(data.variation);
             display(data);
         });
     });
 
     //  display action dropdown
     function display(data) {
-
-        // Object.keys(data.variation).forEach(key => {
-        //     // console.log(key, data.variation[key]);
-        //     obj = data.variation[key]
-        //     Object.keys(obj).forEach(k => {
-        //         console.log(k, obj[k]);
-        //     });
-        // });
-
-
         html = " <p class='row '>\
                 <label for='Actions' class='label col-2 mx-5'>Variations</label>\
                 <select name='variation' id='variations' class='form-control col-6 component'>";
-
-
         Object.keys(data.variation).forEach(key => {
-            // console.log(key, data.variation[key]);
             obj = data.variation[key]
             option = ''
             Object.keys(obj).forEach(k => {
                 option += k + " : " + obj[k] + " ";
-
-
                 console.log(k, obj[k]);
             });
         });

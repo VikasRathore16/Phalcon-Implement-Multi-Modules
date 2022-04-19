@@ -8,6 +8,7 @@ use Phalcon\Acl\Adapter\Memory;
 use Multi\Admin\Models\Roles;
 use Multi\Admin\Models\Components;
 use Multi\Admin\Models\Permissions;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Acl class
@@ -162,6 +163,28 @@ class AclController extends Controller
         $this->view->permissions = $permission->find();
     }
 
+
+    /**
+     * delete function
+     * Delete user permissions
+     * @return void
+     */
+    public function deleteAction()
+    {
+        $permission = new Permissions($this->mongo, 'store', 'permissions');
+        $permission = $permission->deleteOne(
+            [
+                '_id' => new ObjectID($this->request->get('id'))
+            ]
+        );
+        $success = $permission->getDeletedCount();
+        if ($success) {
+            $permissions = new Permissions($this->mongo, 'store', 'permissions');
+            $this->updateAcl($permissions);
+            $this->response->redirect('/admin/acl/aclPermissionList/?locale=' . $this->request->get('locale'));
+        }
+    }
+
     private function updateAcl($permission)
     {
         $aclFile = APP_PATH . '/admin/security/acl.cache';
@@ -170,8 +193,11 @@ class AclController extends Controller
             $permissions = $permission->find();
             foreach ($permissions as $permission) {
                 $acl->addRole($permission->role);
-                if ($permission->action == "*") {
+                if ($permission->action == "*" && $permission->role == 'admin') {
                     $acl->allow('admin', '*', "*");
+                    continue;
+                }
+                if ($permission->action == "*" && $permission->role == 'Admin') {
                     $acl->allow('Admin', '*', "*");
                     continue;
                 }
@@ -188,44 +214,6 @@ class AclController extends Controller
             );
         } else {
             $acl = unserialize(file_get_contents($aclFile));
-        }
-    }
-    /**
-     * delete function
-     * Delete user permissions
-     * @return void
-     */
-    public function deleteAction()
-    {
-        $permission = Permissions::find($this->request->get('id'));
-        $success = $permission->delete();
-        $aclFile = APP_PATH . '/security/acl.cache';
-        if ($success) {
-
-            if (true === is_file($aclFile)) {
-
-                $acl = new Memory();
-
-                $permissions = Permissions::find();
-                foreach ($permissions as $permission) {
-                    $acl->addRole($permission->role);
-                    if ($permission->action == "*") {
-                        $acl->allow('admin', '*', "*");
-                        continue;
-                    }
-                    $acl->addComponent(
-                        $permission->component,
-                        $permission->action
-                    );
-                    $acl->allow($permission->role, $permission->component, $permission->action);
-                }
-
-                file_put_contents(
-                    $aclFile,
-                    serialize($acl)
-                );
-                $this->response->redirect('acl/data/?locale=' . $this->request->get('locale'));
-            }
         }
     }
 }
