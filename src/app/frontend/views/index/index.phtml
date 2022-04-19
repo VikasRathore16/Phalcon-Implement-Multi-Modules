@@ -1,0 +1,37 @@
+<?php
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
+if (!isset($_REQUEST['locale'])) {
+    $_REQUEST['locale'] = 'en';
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!---------------- Including Header ------------>
+    <?php echo $this->partial('index/header') ?>
+
+    <div class="row products mt-5 my-5">
+
+        <!---------------------------------------------------- Buttons for Navigation----------------------------------------------->
+        <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+            <?php echo $this->tag->linkTo('product/productList?locale=' . $_REQUEST['locale'], $t->_("Product List")) ?>
+        </div>
+    </div>
+
+    <!---------------- Including Footer ------------>
+    <?php echo $this->partial('index/footer') ?>
+
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+<?php
+$status = [
+    'Status' => 'Status',
+    'Paid' => 'Paid',
+    'Processing' => 'Processing',
+    'Dispatched' => 'Dispatched',
+    'Shipped' => 'Shipped',
+    'Refunded' => 'Refunded'
+];
+if (1) {
+?>
+    <form action="" class="form container">
+        <input type="hidden" name='dropdown' value="checkbox" />
+        <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxes()">
+                <select>
+                    <option>Filter</option>
+                </select>
+                <div class="overSelect"></div>
+            </div>
+            <div id="checkboxes">
+                <?php
+                $checkboxes =  array_slice($status, 1);
+                foreach ($checkboxes as $key => $value) { ?>
+                    <label for="one">
+                        <input type="checkbox" id="<?php echo $key ?>" value="<?php echo $value ?>" name='<?php echo $value ?>' /><?php echo $value ?>
+                    </label>
+                <?php } ?>
+            </div>
+        </div>
+        <select name='date'>
+            <option value="date" class="date">Select Date</option>
+            <option value="today" class="today">Today</option>
+            <option value="this_week" class="This Week">This Week</option>
+            <option value="this_month" class="This Month">This Month</option>
+            <option id='custom' onchange="custom()" value="custom" class="Custom">Custom Date</option>
+
+        </select>
+        <div id="custom_date">
+            <label for="from"> From</label>
+            <input type="text" name='from' placeholder='<?php echo date('Y-m-d') ?>'>
+            <label for="to"> To</label>
+            <input type="text" name='to' placeholder="<?php echo date('Y-m-d') ?>">
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+    <h2 class='container text-center mt-4'><?php echo $t->_("All Orders"); ?></h2>
+
+    <!------------------------------------------------------------- Orders Table ---------------------------------------------------->
+
+    <table class="table table-bordered table-hover small container mt-5">
+        <thead class="thead-light">
+            <tr>
+                <th><?php echo $t->_("Order Id"); ?></th>
+                <th><?php echo $t->_("Products Id"); ?></th>
+                <th><?php echo $t->_("Order Date"); ?></th>
+                <th><?php echo $t->_("Customer Name"); ?></th>
+                <th><?php echo $t->_("Customer Address"); ?></th>
+                <th><?php echo $t->_("Zipcode"); ?></th>
+
+                <th><?php echo $t->_("Quantity"); ?></th>
+                <th><?php echo $t->_("Status"); ?></th>
+                <th><?php echo $t->_("Operations"); ?></th>
+
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="3"><?php echo $t->_("Order quantity"); ?>: <?php ?></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach ($orders as $order) { ?>
+                <tr>
+                    <td><?php echo $order->_id; ?></td>
+                    <td><?php echo $order->product; ?></td>
+                    <td><?php echo $order->created_date; ?></td>
+                    <td><?php echo $order->customer_name; ?></td>
+                    <td><?php echo $order->customer_address; ?></td>
+                    <td><?php echo $order->zipcode; ?></td>
+
+                    <td><?php echo $order->quantity; ?></td>
+                    <td>
+                        <?php
+                        if (isset($order->Status)) {
+                            echo $order->Status;
+                        }
+
+
+                        // dropdown
+                        echo $this->tag->form(['', 'class' => 'my-5']);
+                        echo $this->tag->hiddenField(['id', 'value' => $order->_id]);
+                        echo $this->tag->select(['status', $status, 'class' => 'form-control product', 'onchange' => 'this.form.submit()']);
+
+                        echo $this->tag->endForm();
+                        ?>
+
+                    </td>
+
+                    <td><?php echo $this->tag->linkTo(['order/editOrder?id=' . $order->_id, $t->_("Edit"), 'class' => 'btn btn-primary']) ?>
+
+                        <?php echo $this->tag->linkTo(['order/delete?id=' . $order->_id, $t->_("Delete"), 'class' => 'btn btn-danger']) ?></td>
+
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <!------------------------------------------------------------- Orders Table ends ---------------------------------------------------->
+
+<?php
+}
+?>
+<style>
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+    }
+
+    #checkboxes label {
+        display: block;
+    }
+
+    #checkboxes label:hover {
+        background-color: #1e90ff;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var expanded = false;
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+    }
+
+    $(document).ready(function() {
+        $("#custom_date").hide();
+    })
+
+    $("select").on("change", function(e) {
+        e.preventDefault();
+        dropdown_value = $(this).val();
+        if (dropdown_value == 'custom') {
+            console.log($(this).val());
+            $("#custom_date").show();
+        }
+
+        //   console.log($(this).data("id"));
+        //   $.ajax({
+        //       method: "GET",
+        //       url: "",
+        //       data: {
+        //           id: $(this).data("id"),
+        //           action: "view"
+        //       }
+
+        //   }).done(function(data) {
+        //       console.log(data);
+        //       display(data);
+        //   });
+    });
+</script>

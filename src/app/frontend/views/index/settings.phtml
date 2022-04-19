@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+</head>
+
+<body class='container text-center mt-5 border'>
+    <h2 class='alert alert-success mt-4'><?php echo $t->_("Settings"); ?></h2>
+    </h2>
+    <!-------------------------checking if settings updated or not-------------------------->
+    <?php
+    if (isset($msg)) {
+        echo $msg;
+    };
+
+    ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+    <?php echo $this->tag->form(['', 'class' => 'my-5']); ?>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'><?php echo $t->_("Title Optimization"); ?></label>
+        <?php echo $this->tag->select(['title', [
+            "Y" => "With Tags",
+            "N" => "Without Tags",
+        ], 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'><?php echo $t->_("Default Price"); ?></label>
+        <?php echo $this->tag->textField(['default_price', 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'><?php echo $t->_("Default Stock"); ?></label>
+        <?php echo $this->tag->textField(['default_stock', 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'><?php echo $t->_("Default Zipcode"); ?></label>
+        <?php echo $this->tag->textField(["default_zipcode", 'class' => 'form-control col-6']) ?>
+    </p>
+
+
+    <p>
+        <?php echo $this->tag->submitButton([$t->_("Update"), 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+
+    <?php echo $this->tag->endForm(); ?>
+    <!-- -------------------------------------------Form ends ------------------------------------------------>
+</body>
+
+</html>

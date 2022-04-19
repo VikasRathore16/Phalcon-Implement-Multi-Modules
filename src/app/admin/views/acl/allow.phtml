@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
+</head>
+
+<body class='container text-center mt-5 border'>
+    <h2 class='alert alert-success mt-4'><?php echo $t->_("Add Role"); ?></h2>
+
+    <!------------------------------------------ checking if user allow for a permission or not ---------------------------------->
+    <?php
+    if (isset($msg)) {
+        echo $msg;
+    };
+    ?>
+    <!------------------------------------------------------------- Forms start ---------------------------------------------------->
+
+    <?php echo $this->tag->form(['acl/data?locale=' . $_GET['locale'], 'class' => 'my-5']); ?>
+
+    <p class="row">
+        <label for="roles" class='label col-2 mx-5'><?php echo $t->_("Roles"); ?></label>
+        <?php
+
+        $allroles = array();
+        foreach ($roles as $role) {
+            $allroles[$role->role] = $role->role;
+        }
+
+        echo $this->tag->select(['roles', $allroles, 'class' => 'form-control col-6']) ?>
+    </p>
+
+    <p class="row">
+        <label for="components" class='label col-2 mx-5'><?php echo $t->_("Components"); ?></label>
+        <?php
+        $allcomponents = array();
+        foreach ($components as $component) {
+            $allcomponents[$component->component] = $component->component;
+        }
+        echo $this->tag->select(['component', $allcomponents, 'class' => 'form-control col-6 component']) ?>
+    </p>
+    <div id="actions-dropdown">
+
+    </div>
+    <p>
+        <?php echo $this->tag->submitButton([$t->_("Allow"), 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+    <?php echo $this->tag->endForm(); ?>
+    <!------------------------------------------------------------- Forms ends ---------------------------------------------------->
+
+</body>
+<!-- ----------------------------------script file for dyamic dropdown actions based on controller------------------------------ -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    console.log('hello');
+
+    $('.component').on('click', function() {
+        controller = ($('#component').val());
+        $.ajax({
+            method: "POST",
+            url: "",
+            data: {
+                controller: controller,
+                'action': 'drop'
+            },
+
+        }).done(function(data) {
+            display(JSON.parse(data));
+        });
+    });
+
+    //  display action dropdown
+    function display(data) {
+        html = " <p class='row '>\
+                <label for='Actions' class='label col-2 mx-5'>Actions</label>\
+                <select name='action' id='actions' class='form-control col-6 component'>";
+        for (val in data) {
+            html += "<option value=" + data[val] + ">" + data[val] + "</option>"
+        }
+        html += "</select></p >";
+        document.getElementById("actions-dropdown").innerHTML = html;
+
+    }
+</script>
+
+</html>

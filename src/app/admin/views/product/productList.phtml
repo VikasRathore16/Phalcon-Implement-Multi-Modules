@@ -1,0 +1,111 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<?php
+
+
+if (1) {
+?>
+  <form method="get">
+    <input name='query' placeholder="Product Name" \>
+    <button type="submit" name='submit' value="Submit">Search</button>
+    <button type="submit" name='submit' value="all">All</button>
+  </form>
+  <h2 class='container text-center mt-4'><?php echo $t->_("All Products"); ?></h2>
+
+  <?php if (isset($msg)) {
+    echo $msg;
+  }; ?>
+  <!------------------------------------------------------------- Products Table ---------------------------------------------------->
+
+  <table class="table table-bordered table-hover container mt-5">
+    <thead class="thead-light">
+      <tr>
+        <th><?php echo $t->_("Id"); ?></th>
+        <th><?php echo $t->_("Name"); ?></th>
+        <th><?php echo $t->_("Description"); ?></th>
+        <th><?php echo $t->_("Tags"); ?></th>
+        <th><?php echo $t->_("Price"); ?></th>
+        <th><?php echo $t->_("Stocks"); ?></th>
+        <th><?php echo $t->_("Operations"); ?></th>
+        <th><?php echo $t->_("Quick View"); ?></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <td colspan="3"><?php echo $t->_("Products quantity"); ?>: <?php ?></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <?php foreach ($products as $product) { ?>
+        <tr>
+          <td><?php echo $product->_id; ?></td>
+          <td><?php echo $product->product_name; ?></td>
+          <td><?php echo $product->description; ?></td>
+          <td><?php echo $product->tags; ?></td>
+          <td><?php echo $product->price; ?></td>
+          <td><?php echo $product->stocks; ?></td>
+          <td><?php echo $this->tag->linkTo(['product/editProduct?id=' . $product->_id, $t->_("Edit"), 'class' => 'btn btn-primary']) ?>
+
+            <?php echo $this->tag->linkTo(['product/delete?id=' . $product->_id, $t->_("Delete"), 'class' => 'btn btn-danger']) ?></td>
+          <td>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#<?php echo $product->_id; ?>">
+              Quick View
+            </button>
+            <div class="modal fade" id="<?php echo $product->_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Additional</h5>
+                  </div>
+                  <div class="modal-body">
+                    <?php foreach ($product->additional as $key => $value) {
+
+                      echo "<div class='row mx-5'> $key : $value</div>";
+                    }
+                    ?>
+                  </div>
+
+
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Variations</h5>
+
+                  </div>
+                  <div class="modal-body">
+                    <?php foreach ($product->variation as $key => $value) {
+
+                      echo "<div class='row mx-5'> $key :";
+                      foreach ($value as $label => $data) {
+                        echo " <br> <div class='mx-5'>$label : $data</div>";
+                      }
+                      echo "</div>";
+                    }
+                    ?>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+      <?php } ?>
+    </tbody>
+  </table>
+  <!------------------------------------------------------------- Products Table ---------------------------------------------------->
+
+<?php
+}
+?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<script>
+
+</script>

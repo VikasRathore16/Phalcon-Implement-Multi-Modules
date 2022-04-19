@@ -1,0 +1,38 @@
+<?php
+
+echo "<h1 class='container'>" . $t->_('Permissions table') . "!</h1>";
+if ($permissions->count() > 0) {
+?>
+    <!------------------------------------------------------------- Permissions Table ---------------------------------------------------->
+
+    <table class="table table-bordered table-hover container mt-5">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th><?php echo $t->_("Role"); ?></th>
+                <th><?php echo $t->_("Components"); ?></th>
+                <th><?php echo $t->_("Actions"); ?></th>
+                <th><?php echo $t->_("Operation"); ?></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="3"><?php echo $t->_("Users quantity"); ?>: <?php echo $permissions->count(); ?></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach ($permissions as $permission) { ?>
+                <tr>
+                    <td><?php echo $permission->id; ?></td>
+                    <td><?php echo $permission->role; ?></td>
+                    <td><?php echo $permission->component; ?></td>
+                    <td><?php echo $permission->action; ?></td>
+                    <td><?php echo $this->tag->linkTo(['acl/delete?id=' . $permission->id .'&locale='.$this->request->get('locale'), $t->_("Delete"), 'class' => 'btn btn-danger']) ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <!------------------------------------------------------------- Permissions Table ends ---------------------------------------------------->
+
+<?php
+}

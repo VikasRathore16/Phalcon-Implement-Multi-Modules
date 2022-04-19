@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class='container text-center mt-5 border'>
+    <h2 class='alert alert-success mt-4'><?php echo $t->_("Login"); ?></h2>
+    </h2>
+    <!-- ------------------------------ checking message from controller ----------------- ------------>
+
+    <?php
+    if(isset($msg)){
+        echo $msg;
+    };
+    ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+    <?php echo $this->tag->form(['', 'class' => 'my-5']); ?>
+    <p class="row">
+        <label for="name" class='label col-2 mx-5'><?php echo $t->_("Email"); ?></label>
+        <?php echo $this->tag->textField(['email', 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="address" class='label col-2 mx-5'><?php echo $t->_("Password"); ?></label>
+        <?php echo $this->tag->textField(['password', 'class' => 'form-control col-6']) ?>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton([$t->_("Login"), 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+    <?php echo $this->tag->endForm(); ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+</body>
+
+</html>

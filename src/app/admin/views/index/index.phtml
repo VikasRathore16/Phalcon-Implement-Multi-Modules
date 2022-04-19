@@ -1,0 +1,31 @@
+<?php
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
+if (!isset($_REQUEST['locale'])) {
+    $_REQUEST['locale'] = 'en';
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!---------------- Including Header ------------>
+    <?php echo $this->partial('index/header') ?>
+
+    
+
+    <!---------------- Including Footer ------------>
+    <?php echo $this->partial('index/footer') ?>
+
+</body>
+
+</html>

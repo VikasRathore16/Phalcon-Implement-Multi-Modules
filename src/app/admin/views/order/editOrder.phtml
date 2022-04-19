@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $t->_("Add Order"); ?></title>
+</head>
+
+<body class='container text-center mt-5 border'>
+    <h2 class='alert alert-success mt-4'><?php echo $t->_("Edit Order"); ?></h2>
+    </h2>
+    <!-- ------------------------------ checking message from controller ----------------- ------------>
+
+    <?php
+    if (isset($msg)) {
+        echo $msg;
+    };
+    ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+    <?php echo $this->tag->form(['', 'class' => 'my-5']); ?>
+    <p class="row">
+        <label for="name" class='label col-2 mx-5'><?php echo $t->_("Customer Name"); ?></label>
+        <?php echo $this->tag->textField(['customer_name', 'value' => $order[0]->customer_name, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="address" class='label col-2 mx-5'><?php echo $t->_("Customer Address"); ?></label>
+        <?php echo $this->tag->textField(['customer_address', 'value' => $order[0]->customer_address, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="zipcode" class='label col-2 mx-5'> <?php echo $t->_("Zipcode"); ?></label>
+        <?php echo $this->tag->textField(['zipcode', 'value' => $order[0]->zipcode, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="products" class='label col-2 mx-5'><?php echo $t->_("Products"); ?></label>
+        <?php
+
+        $allproducts = array();
+        foreach ($products as $product) {
+            $allproducts[$product->product_name] = $product->product_name;
+        }
+
+        echo $this->tag->select(['product', $allproducts, 'class' => 'form-control col-6']) ?>
+    </p>
+
+    <p class="row">
+        <label for="quantity" class='label col-2 mx-5'><?php echo $t->_("Quantity"); ?></label>
+        <?php echo $this->tag->textField(['quantity', 'value' => $order[0]->quantity, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton(['value' => $t->_("Update Order"), 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+    <?php echo $this->tag->endForm(); ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+</body>
+
+</html>

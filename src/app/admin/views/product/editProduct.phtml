@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class='container text-center mt-5 border'>
+    <h2 class='alert alert-success mt-4'> <?php echo $t->_("Edit Product"); ?></h2>
+    <!-- ------------------------------ checking message from controller ----------------- ------------>
+    <?php if (isset($msg)) {
+        echo $msg;
+    }; ?>
+
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+    <?php echo $this->tag->form(['', 'class' => 'my-5']);
+    // print_r($product);
+    // var_dump($product);
+    ?>
+    <p class="row">
+        <?php echo $this->tag->hiddenField(['product_name', 'value' => $product->product_name, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> <?php echo $t->_("Product Name"); ?></label>
+        <?php echo $this->tag->textField(['product_name', 'value' => $product->product_name, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> <?php echo $t->_("Description"); ?></label>
+        <?php echo $this->tag->textArea(['description', 'value' => $product->description, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> <?php echo $t->_("Tags"); ?></label>
+        <?php echo $this->tag->textField(['tags', 'value' => $product->tags,  'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> <?php echo $t->_("Price"); ?> </label>
+        <?php echo $this->tag->textField(['price', 'value' => $product->price, 'class' => 'form-control col-6']) ?>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> <?php echo $t->_("Stock"); ?> </label>
+        <?php echo $this->tag->textField(['stocks', 'value' => $product->stocks, 'class' => 'form-control col-6']) ?>
+    </p>
+
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> Additional Fields</label>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" id="additionField" viewBox="0 0 16 16" onclick="additional_fields()">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+        </svg>
+    <div id="container">
+    </div>
+    </p>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5'> Variations</label>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" id="variatonField" viewBox="0 0 16 16" onclick="variation_fields()">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+        </svg>
+    <div id="variation">
+    </div>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton(['value' => $t->_("Update Product"), 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+    <?php echo $this->tag->endForm(); ?>
+    <!-- -------------------------------------------Form starts ------------------------------------------------>
+
+</body>
+
+</html>

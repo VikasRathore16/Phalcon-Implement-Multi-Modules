@@ -1,0 +1,48 @@
+<?php
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
+?>
+
+<!---------------- Including Header ------------>
+<?php echo $this->partial('index/header') ?>
+<div class="row products mt-5 my-5">
+
+    <!---------------------------------------------------- Buttons for Navigation----------------------------------------------->
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/product/productList?locale=' . $_REQUEST['locale'], $t->_("Product List")) ?>
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/product/addProduct?locale=' . $_REQUEST['locale'], $t->_('Product Add')) ?>
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/order/orderList?locale=' . $_REQUEST['locale'], $t->_('Orders List')) ?>
+    </div>
+
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/order/addOrder?locale=' . $_REQUEST['locale'], $t->_('Order Add')) ?>
+
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/index/settings?locale=' . $_REQUEST['locale'], $t->_('Settings')) ?>
+
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/acl?locale=' . $_REQUEST['locale'], $t->_('Acl')) ?>
+
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/acl/data?locale=' . $_REQUEST['locale'], $t->_('Permissions')) ?>
+
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/user/addUser?locale=' . $_REQUEST['locale'], $t->_('Add User')) ?>
+
+    </div>
+    <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
+        <?php echo $this->tag->linkTo('/admin/user/index?locale=' . $_REQUEST['locale'], $t->_('User Lists')) ?>
+    </div>
+
+</div>
+
+<!---------------- Including Footer ------------>
+<?php echo $this->partial('index/footer') ?>
