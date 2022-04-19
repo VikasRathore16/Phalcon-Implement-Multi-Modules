@@ -1,8 +1,9 @@
 <?php
+
 namespace Multi\Admin\Models;
 
-use Phalcon\Mvc\Model;
+use MongoDB\Collection;
 
-class Components extends Model
+class Components extends Collection
 {
 }

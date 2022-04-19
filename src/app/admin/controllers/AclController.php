@@ -6,6 +6,8 @@ use Phalcon\Mvc\Controller;
 use Phalcon\Http\Request;
 use Phalcon\Acl\Adapter\Memory;
 use Multi\Admin\Models\Roles;
+use Multi\Admin\Models\Components;
+use Multi\Admin\Models\Permissions;
 
 /**
  * Acl class
@@ -39,12 +41,8 @@ class AclController extends Controller
             );
             $newrole = $newrole->insertOne(
                 $rollarr,
-                // [
-                //     'role'
-                // ]
             );
             $success = $newrole->getInsertedCount();
-            // $this->view->success = $success;
             if ($success) {
                 $this->view->msg = "<h6 class='alert alert-success w-75 container text-center'>Added Successfully</h6>";
             } else {
@@ -63,34 +61,35 @@ class AclController extends Controller
     {
         $request = new Request();
         $this->view->t = $this->cache->get($this->request->get('locale'));
-
-        $dir    = APP_PATH . '/controllers';
-        $files = scandir($dir, 1);
-        $controllers = array();
-        foreach ($files as $key => $value) {
-            $explode  = explode('Controller', $value);
-            array_push($controllers, strtolower($explode[0]));
-        }
-        $this->view->controllers = array_diff($controllers, array('.', '..'));
-
+        $this->view->controllers = $this->displayControllers();
 
         if (true === $request->isPost()) {
             $this->view->post = $request->getPost();
-            $component = new Components();
-            $component->assign(
+            $component = new Components($this->mongo, 'store', 'components');
+            $component = $component->insertOne(
                 $request->getPost(),
-                [
-                    'component'
-                ]
             );
-            $success = $component->save();
-            $this->view->success = $success;
+            $success = $component->getInsertedCount();
+            // $this->view->success = $success;
             if ($success) {
                 $this->view->msg = "<h6 class='alert alert-success w-75 container text-center'>Added Successfully</h6>";
             } else {
                 $this->view->msg = "<h6 class='alert alert-danger w-75 container text-center'>Something went wrong</h6>";
             }
         }
+    }
+
+
+    private function displayControllers()
+    {
+        $dir    = APP_PATH . '/admin/controllers';
+        $files = scandir($dir, 1);
+        $controllers = array();
+        foreach ($files as $key => $value) {
+            $explode  = explode('Controller', $value);
+            array_push($controllers, strtolower($explode[0]));
+        }
+        return  array_diff($controllers, array('.', '..'));
     }
 
     /**
@@ -101,23 +100,29 @@ class AclController extends Controller
     public function allowAction()
     {
         $this->view->t = $this->cache->get($this->request->get('locale'));
-        $this->view->roles = Roles::find();
-        $this->view->components  = Components::find();
-        if ($this->request->isPost('action')) {
-            $controller   = $this->request->getPost('controller');
-            $controller = strtolower($controller);
-            $dir    = APP_PATH . '/views/' . $controller;
-            $files = scandir($dir, 1);
-            $actions = array();
-            foreach ($files as $key => $value) {
-                $explode  = explode('.phtml', $value);
-                array_push($actions, $explode[0]);
-            }
-            $actions = array_diff($actions, array('.', '..'));
+        $roles = new Roles($this->mongo, 'store', 'roles');
+        $components = new Components($this->mongo, 'store', 'components');
 
+        $this->view->roles = $roles->find();
+        $this->view->components  = $components->find();
+        if ($this->request->isPost('action')) {
+            $actions = $this->displayActions($this->request->getPost('controller'));
             echo json_encode($actions);
             die;
         }
+    }
+
+    private function displayActions($controllerName)
+    {
+        $controller = strtolower($controllerName);
+        $dir    = APP_PATH . '/admin/views/' . $controller;
+        $files = scandir($dir, 1);
+        $actions = array();
+        foreach ($files as $key => $value) {
+            $explode  = explode('.phtml', $value);
+            array_push($actions, $explode[0]);
+        }
+        return array_diff($actions, array('.', '..'));
     }
 
     /**
@@ -127,72 +132,62 @@ class AclController extends Controller
      */
     public function dataAction()
     {
+        $permission = new Permissions($this->mongo, 'store', 'permissions');
         $request = new Request();
         $this->view->t = $this->cache->get($this->request->get('locale'));
         if ($request->isPost()) {
             $role = $request->getPost('roles');
             $component  = $request->getPost('component');
             $action  = $request->getPost('action');
-            $arr = array(
+            $newPermission = array(
                 'role' => $role,
                 'component' => $component,
                 'action' => $action,
             );
-            $this->view->allow = $request->getPost();
-            $permission = Permissions::query()
-                ->where("role = :role:")
-                ->andWhere("component = :component:")
-                ->andWhere("action = :action:")
-                ->bind(
-                    [
-                        'role' => $role,
-                        'component'  => $component,
-                        'action' => $action,
-                    ]
-                )
-                ->execute();
-            if (count($permission) < 1) {
-                $permission = new Permissions();
-                $permission->assign(
-                    $arr,
-                    [
-                        'role',
-                        'component',
-                        'action'
-                    ]
+            $find = $permission->find([
+                'role' => $role,
+                'component' => $component,
+                'action' => $action,
+            ]);
+            if (count($find->toArray()) < 1) {
+                $permissionInsert = $permission->insertOne(
+                    $newPermission
                 );
-                $success = $permission->save();
-                $aclFile = APP_PATH . '/security/acl.cache';
+                $success = $permissionInsert->getInsertedCount();
                 if ($success) {
-                    if (true === is_file($aclFile)) {
-                        $acl = new Memory();
-                        $permissions = Permissions::find();
-                        foreach ($permissions as $permission) {
-                            $acl->addRole($permission->role);
-                            if ($permission->action == "*") {
-                                $acl->allow('admin', '*', "*");
-                                continue;
-                            }
-                            $acl->addComponent(
-                                $permission->component,
-                                $permission->action
-                            );
-                            $acl->allow($permission->role, $permission->component, $permission->action);
-                        }
-                        file_put_contents(
-                            $aclFile,
-                            serialize($acl)
-                        );
-                    } else {
-                        $acl = unserialize(file_get_contents($aclFile));
-                    }
+                    $this->updateAcl($permission);
                 }
             }
         }
-
-        $this->view->permissions = Permissions::find();
+        $this->view->permissions = $permission->find();
     }
 
+    private function updateAcl($permission)
+    {
+        $aclFile = APP_PATH . '/admin/security/acl.cache';
+        if (true === is_file($aclFile)) {
+            $acl = new Memory();
+            $permissions = $permission->find();
+            foreach ($permissions as $permission) {
+                $acl->addRole($permission->role);
+                if ($permission->action == "*") {
+                    $acl->allow('admin', '*', "*");
+                    continue;
+                }
+                $acl->addComponent(
+                    $permission->component,
+                    $permission->action
+                );
+                $acl->allow($permission->role, $permission->component, $permission->action);
+            }
+            file_put_contents(
+                $aclFile,
+                serialize($acl)
+            );
+        } else {
+            $acl = unserialize(file_get_contents($aclFile));
+        }
+    }
     /**
      * delete function
      * Delete user permissions

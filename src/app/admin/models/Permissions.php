@@ -2,7 +2,8 @@
 namespace Multi\Admin\Models;
 
 use Phalcon\Mvc\Model;
+use MongoDB\Collection;
 
-class Permissions extends Model
+class Permissions extends Collection
 {
 }
