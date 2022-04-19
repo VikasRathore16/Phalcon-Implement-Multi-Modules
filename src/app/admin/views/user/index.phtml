@@ -11,7 +11,8 @@ if (1) {
         <thead class="thead-light">
             <tr>
                 <th><?php echo $t->_("Id"); ?></th>
-
+                <th><?php echo $t->_("Username"); ?></th>
+                <th><?php echo $t->_("Role"); ?></th>
                 <th><?php echo $t->_("JWT Token"); ?></th>
                 <th><?php echo $t->_("Copy"); ?></th>
 
@@ -21,7 +22,8 @@ if (1) {
             <?php foreach ($users as $user) { ?>
                 <tr>
                     <td><?php echo $user->_id; ?></td>
-
+                    <td><?php echo $user->username; ?></td>
+                    <td><?php echo $user->role; ?></td>
                     <td><?php echo $user->jwt; ?></td>
                     <td> <button onClick="SelfCopy(this.id)" id="<?php echo $user->jwt; ?>" class='btn'><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
                                 <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />

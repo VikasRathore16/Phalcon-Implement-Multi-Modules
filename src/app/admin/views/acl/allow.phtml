@@ -9,7 +9,7 @@
 </head>
 
 <body class='container text-center mt-5 border'>
-    <h2 class='alert alert-success mt-4'><?php echo $t->_("Add Role"); ?></h2>
+    <h2 class='alert alert-success mt-4'><?php echo $t->_("Acl Permission"); ?></h2>
 
     <!------------------------------------------ checking if user allow for a permission or not ---------------------------------->
     <?php
@@ -19,7 +19,7 @@
     ?>
     <!------------------------------------------------------------- Forms start ---------------------------------------------------->
 
-    <?php echo $this->tag->form(['/admin/acl/data?locale=' . $_GET['locale'], 'class' => 'my-5']); ?>
+    <?php echo $this->tag->form(['/admin/acl/aclPermissionList?locale=' . $_GET['locale'], 'class' => 'my-5']); ?>
 
     <p class="row">
         <label for="roles" class='label col-2 mx-5'><?php echo $t->_("Roles"); ?></label>

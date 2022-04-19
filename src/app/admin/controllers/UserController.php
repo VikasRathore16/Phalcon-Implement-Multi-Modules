@@ -37,6 +37,8 @@ class UserController extends Controller
         if ($this->request->isPost()) {
             $user = new Users($this->mongo, 'store', 'users');
             $newUser = array(
+                'username' => $this->request->getPost('username'),
+                'role' => $this->request->getPost('roles'),
                 'jwt' => $this->createToken($this->request->getPost()),
             );
             $user =  $user->insertOne(

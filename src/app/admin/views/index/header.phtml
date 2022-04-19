@@ -1,6 +1,5 @@
 <?
 header("Cache-Control: no cache");
-session_cache_limiter("private_no_expire");
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +32,7 @@ session_cache_limiter("private_no_expire");
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                         <li>
-                            <a href="http://localhost:8080/index/?locale=<?php echo $_REQUEST['locale'] ?>" class="nav-link text-white">
+                            <a href="http://localhost:8080/index?locale=<?php echo $_REQUEST['locale'] ?>" class="nav-link text-white">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                                     <use xlink:href="#home" />
                                 </svg>
@@ -41,7 +40,7 @@ session_cache_limiter("private_no_expire");
                             </a>
                         </li>
                         <li>
-                            <a href="http://localhost:8080/index/dashboard/?locale=<?php echo $_REQUEST['locale'] ?>" class="nav-link text-white">
+                            <a href="http://localhost:8080/admin/index/dashboard?locale=<?php echo $_REQUEST['locale'] ?>" class="nav-link text-white">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                                     <use xlink:href="#speedometer2" />
                                 </svg>
@@ -56,9 +55,9 @@ session_cache_limiter("private_no_expire");
                 <!-- checking a user is looged or not -->
                 <?php
                 if ($this->session->has('username')) {
-                    echo $this->tag->linkTo(['login/logout',  $t->_("Log Out"), 'class' => 'nav-link border text-white text-center']);
+                    echo $this->tag->linkTo(['admin/login/logout',  $t->_("Log Out"), 'class' => 'nav-link border text-white text-center']);
                 } else {
-                    echo $this->tag->linkTo(['login/?locale=' . $_REQUEST['locale'],  $t->_("Log In"), 'class' => 'nav-link border text-white text-center']);
+                    echo $this->tag->linkTo(['admin/login?locale=' . $_REQUEST['locale'],  $t->_("Log In"), 'class' => 'nav-link border text-white text-center']);
                 }
                 ?>
             </div>

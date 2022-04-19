@@ -1,6 +1,6 @@
 <?php
 header("Cache-Control: no cache");
-session_cache_limiter("private_no_expire");
+
 ?>
 
 <!---------------- Including Header ------------>
@@ -31,7 +31,7 @@ session_cache_limiter("private_no_expire");
 
     </div>
     <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">
-        <?php echo $this->tag->linkTo('/admin/acl/data?locale=' . $_REQUEST['locale'], $t->_('Permissions')) ?>
+        <?php echo $this->tag->linkTo('/admin/acl/aclPermissionList?locale=' . $_REQUEST['locale'], $t->_('Permissions')) ?>
 
     </div>
     <div class="col-3 btn text-center p-3 border-danger  h4 mx-5 border mt-5">

@@ -130,7 +130,7 @@ class AclController extends Controller
      * List all users with their permissions and add permissions to ach.cache
      * @return void
      */
-    public function dataAction()
+    public function aclPermissionListAction()
     {
         $permission = new Permissions($this->mongo, 'store', 'permissions');
         $request = new Request();
@@ -172,6 +172,7 @@ class AclController extends Controller
                 $acl->addRole($permission->role);
                 if ($permission->action == "*") {
                     $acl->allow('admin', '*', "*");
+                    $acl->allow('Admin', '*', "*");
                     continue;
                 }
                 $acl->addComponent(
@@ -180,6 +181,7 @@ class AclController extends Controller
                 );
                 $acl->allow($permission->role, $permission->component, $permission->action);
             }
+
             file_put_contents(
                 $aclFile,
                 serialize($acl)

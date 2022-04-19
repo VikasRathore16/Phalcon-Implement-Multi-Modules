@@ -18,11 +18,13 @@ class SecureController extends Controller
      */
     public function indexAction()
     {
-        $aclFile = APP_PATH . '/security/acl.cache';
+        $aclFile = APP_PATH . '/admin/security/acl.cache';
         if (true !== is_file($aclFile)) {
             $acl = new Memory();
 
             $acl->addRole('admin');
+            $acl->addRole('Admin');
+
             $acl->addComponent(
                 'index',
                 [
@@ -30,6 +32,8 @@ class SecureController extends Controller
                 ]
             );
             $acl->allow('admin', '*', '*');
+            $acl->allow('Admin', '*', '*');
+
             file_put_contents(
                 $aclFile,
                 serialize($acl)

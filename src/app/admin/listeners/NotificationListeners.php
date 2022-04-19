@@ -55,10 +55,12 @@ class NotificationListeners extends Injectable
      */
     public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application)
     {
-        $aclFile = APP_PATH . '/security/acl.cache';
+        $aclFile = APP_PATH . '/admin/security/acl.cache';
         if (true === is_file($aclFile)) {
             $acl = unserialize(file_get_contents($aclFile));
             $bearer = $application->request->get('bearer') ?? 'invalidToken';
+            // print_r($bearer);
+            // die();
             $controller = $application->router->getControllerName() ?? 'index';
             $action = $application->router->getActionName() ?? 'index';
 
@@ -78,7 +80,9 @@ class NotificationListeners extends Injectable
 
                 if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
                     echo '<h2>Access denied :(</h2>';
-                    die;
+                    echo "<pre>";
+                    print_r($acl);
+                    die('no role');
                 }
             }
         }
