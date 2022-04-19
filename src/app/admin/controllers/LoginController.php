@@ -54,7 +54,8 @@ class LoginController extends Controller
         unset($this->session->user);
         try {
             $key = "example_key";
-            $users = Users::find();
+            $users = new Users($this->mongo, 'store', 'users');
+            $users = $users->find();
             foreach ($users as $user) {
                 $decoded = JWT::decode($user->jwt, new Key($key, 'HS256'));
                 $decoded_array = (array) $decoded;

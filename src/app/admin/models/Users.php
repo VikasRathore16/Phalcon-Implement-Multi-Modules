@@ -1,10 +1,9 @@
 <?php
+
 namespace Multi\Admin\Models;
 
+use MongoDB\Collection;
 
-use Phalcon\Mvc\Model;
-
-
-class Users extends Model
+class Users extends Collection
 {
 }

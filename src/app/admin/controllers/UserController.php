@@ -19,8 +19,9 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        $users = new Users($this->mongo, 'store', 'users');
         $this->view->t = $this->cache->get($this->request->get('locale'));
-        $this->view->users = Users::find();
+        $this->view->users = $users->find();
     }
 
     /**
@@ -30,43 +31,37 @@ class UserController extends Controller
      */
     public function addUserAction()
     {
+        $roles = new Roles($this->mongo, 'store', 'roles');
+        $this->view->roles = $roles->find();
         $this->view->t = $this->cache->get($this->request->get('locale'));
-        $this->view->roles = Roles::find();
         if ($this->request->isPost()) {
-            //collecting data from POST
-            $username = $this->request->getPost('username');
-            $email = $this->request->getPost('email');
-            $password = $this->request->getPost('password');
-            $roles = $this->request->getPost('roles');
-
-            $payload = array(
-                "username" => $username,
-                "email" => $email,
-                "password" => $password,
-                "role" => $roles,
-            );
-
-            //ecoding array 
-            $key = "example_key";
-            $jwt = JWT::encode($payload, $key, 'HS256');
-
+            $user = new Users($this->mongo, 'store', 'users');
             $newUser = array(
-                'jwt' => $jwt,
+                'jwt' => $this->createToken($this->request->getPost()),
             );
-
-            $user = new Users();
-            $user->assign(
-                $newUser,
-                [
-                    'jwt'
-                ]
+            $user =  $user->insertOne(
+                $newUser
             );
-            $success =  $user->save();
+            $success =  $user->getInsertedCount();
             if ($success) {
                 $this->view->msg = "<h6 class='alert alert-success w-75 container text-center'>Added Successfully</h6>";
             } else {
                 $this->view->msg = "<h6 class='alert alert-danger w-75 container text-center'>Something went wrong</h6>";
             }
         }
+    }
+
+    private function createToken($postArray)
+    {
+        $payload = array(
+            "username" => $postArray['username'],
+            "email" => $postArray['email'],
+            "password" => $postArray['password'],
+            "role" => $postArray['roles'],
+        );
+        //ecoding array
+        $key = "example_key";
+        $jwt = JWT::encode($payload, $key, 'HS256');
+        return $jwt;
     }
 }
