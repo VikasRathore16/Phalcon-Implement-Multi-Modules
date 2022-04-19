@@ -11,11 +11,11 @@
 <body class='container mt-5'>
     <!---------------------------------------------------- Buttons for Navigation----------------------------------------------->
 
-    <?php echo $this->tag->linkTo(['acl/addRole?locale=' . $_REQUEST['locale'], $t->_('Add bearer'), 'class' => 'p-5 m-5 btn btn-primary'])
+    <?php echo $this->tag->linkTo(['/admin/acl/addRole?locale=' . $_REQUEST['locale'], $t->_('Add bearer'), 'class' => 'p-5 m-5 btn btn-primary'])
     ?>
-    <?php echo $this->tag->linkTo(['acl/addComponent?locale=' . $_REQUEST['locale'], $t->_('Add Component'), 'class' => 'p-5 m-5 btn btn-primary'])
+    <?php echo $this->tag->linkTo(['/admin/acl/addComponent?locale=' . $_REQUEST['locale'], $t->_('Add Component'), 'class' => 'p-5 m-5 btn btn-primary'])
     ?>
-    <?php echo $this->tag->linkTo(['acl/allow?locale=' . $_REQUEST['locale'], $t->_('Allow Role'), 'class' => 'p-5 m-5 btn btn-primary'])
+    <?php echo $this->tag->linkTo(['/admin/acl/allow?locale=' . $_REQUEST['locale'], $t->_('Allow Role'), 'class' => 'p-5 m-5 btn btn-primary'])
     ?>
 
 </body>

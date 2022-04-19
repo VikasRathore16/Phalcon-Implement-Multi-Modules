@@ -1,11 +1,11 @@
 <?php
+
 namespace Multi\Admin\Controllers;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Request;
-use Phalcon\Acl\Role;
 use Phalcon\Acl\Adapter\Memory;
-
+use Multi\Admin\Models\Roles;
 
 /**
  * Acl class
@@ -33,18 +33,18 @@ class AclController extends Controller
         $request = new Request();
         $this->view->t = $this->cache->get($this->request->get('locale'));
         if (true === $request->isPost()) {
-            $newrole = new Roles();
+            $newrole = new Roles($this->mongo, 'store', 'roles');
             $rollarr = array(
                 'role' => $request->getPost('roles'),
             );
-            $newrole->assign(
+            $newrole = $newrole->insertOne(
                 $rollarr,
-                [
-                    'role'
-                ]
+                // [
+                //     'role'
+                // ]
             );
-            $success = $newrole->save();
-            $this->view->success = $success;
+            $success = $newrole->getInsertedCount();
+            // $this->view->success = $success;
             if ($success) {
                 $this->view->msg = "<h6 class='alert alert-success w-75 container text-center'>Added Successfully</h6>";
             } else {
