@@ -2,9 +2,8 @@
 
 namespace Multi\Admin\Models;
 
+use MongoDB\Collection;
 
-use Phalcon\Mvc\Model;
-
-class Settings extends Model
+class Settings extends Collection
 {
 }

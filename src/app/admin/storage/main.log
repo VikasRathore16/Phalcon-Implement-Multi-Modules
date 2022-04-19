@@ -6437,3 +6437,16 @@
 [2022-04-19T04:24:08+00:00][error] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'users' AND `TABLE_SCHEMA` = DATABASE()
 [2022-04-19T04:24:08+00:00][error] DESCRIBE `users`
 [2022-04-19T04:24:08+00:00][error] SELECT `users`.`user_id`, `users`.`jwt` FROM `users`
+[2022-04-19T04:39:51+00:00][error] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'users' AND `TABLE_SCHEMA` = DATABASE()
+[2022-04-19T04:39:51+00:00][error] DESCRIBE `users`
+[2022-04-19T04:39:51+00:00][error] SELECT `users`.`user_id`, `users`.`jwt` FROM `users`
+[2022-04-19T04:41:30+00:00][error] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'roles' AND `TABLE_SCHEMA` = DATABASE()
+[2022-04-19T04:41:30+00:00][error] DESCRIBE `roles`
+[2022-04-19T04:41:31+00:00][error] SELECT `roles`.`role_id`, `roles`.`role` FROM `roles`
+[2022-04-19T04:50:03+00:00][error] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'settings' AND `TABLE_SCHEMA` = DATABASE()
+[2022-04-19T04:50:03+00:00][error] DESCRIBE `settings`
+[2022-04-19T04:50:03+00:00][error] SELECT `settings`.`id`, `settings`.`title_optimization`, `settings`.`default_price`, `settings`.`default_stock`, `settings`.`default_zipcode` FROM `settings` WHERE `settings`.`id` = 1
+[2022-04-19T04:50:03+00:00][error] UPDATE `settings` SET `title_optimization` = ?, `default_price` = ?, `default_stock` = ?, `default_zipcode` = ? WHERE `id` = ?
+[2022-04-19T05:00:16+00:00][error] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'users' AND `TABLE_SCHEMA` = DATABASE()
+[2022-04-19T05:00:16+00:00][error] DESCRIBE `users`
+[2022-04-19T05:00:16+00:00][error] SELECT `users`.`user_id`, `users`.`jwt` FROM `users`

@@ -4,6 +4,8 @@ namespace Multi\Admin\Controllers;
 
 use Firebase\JWT\JWT;
 use Phalcon\Mvc\Controller;
+use Multi\Admin\Models\Users;
+use Multi\Admin\Models\Roles;
 
 /**
  * UserController class
